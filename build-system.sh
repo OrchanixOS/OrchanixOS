@@ -49,6 +49,8 @@ chmod 664 /var/log/lastlog
 chmod 600 /var/log/btmp
 # Install man pages for OrchanixOS system utilities.
 cp -r man/* /usr/share/man
+# Install Orchanix Backgrounds.
+install -t /usr/share/backgrounds/xfce -Dm644 backgrounds/*
 # Set the locale correctly.
 mkdir -p /usr/lib/locale
 mklocales 2>/dev/null
@@ -3348,8 +3350,7 @@ GRUB_GFXPAYLOAD_LINUX="keep"
 #GRUB_COLOR_HIGHLIGHT="light-cyan/blue"
 
 # Uncomment one of them for the gfx desired, a image background or a gfxtheme
-# Add Background.
-#GRUB_BACKGROUND="/usr/share/backgrounds/xfce/OrchanixOS-Futuristic-Dark.png"
+GRUB_BACKGROUND="/usr/share/backgrounds/xfce/Orchanix-Gray-Middle.png"
 #GRUB_THEME="/path/to/theme"
 
 # Uncomment to get a beep at GRUB start
