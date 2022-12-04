@@ -7,6 +7,4 @@
 [submodule "stage3/plasma"]
   path = stage3/plasma
   url = https://github.com/OrchanixOS/Orchanix-Plasma
-[submodule "stage3/Orchanix-GNOME"]
-	path = stage3/Orchanix-GNOME
-	url = https://github.com/OrchanixOS/Orchanix-GNOME
+  
