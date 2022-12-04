@@ -1,0 +1,4 @@
+DISTRIB_ID="OrchanixOS"
+DISTRIB_RELEASE="development"
+DISTRIB_CODENAME="development"
+DISTRIB_DESCRIPTION="OrchanixOS"

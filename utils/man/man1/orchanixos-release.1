@@ -1,0 +1,39 @@
+.TH "ORCHANIXOS-RELEASE" "1" "May 2022" "orchanixos-release" "OrchanixOS System Utilities"
+.hy
+.SH NAME
+.PP
+orchanixos-release - Display the installed version of OrchanixOS.
+.SH SYNOPSIS
+.PP
+\f[B]orchanixos-release\f[R]
+.SH DESCRIPTION
+.PP
+\f[B]orchanixos-release\f[R] is a simple utility that will display the installed version of OrchanixOS (e.g. 2022.06) on standard output. It is human-readable and machine-parseable.
+
+\f[B]orchanixos-release\f[R] reads the /etc/orchanixos-release file, which should contain a single line stating the OrchanixOS release. If this file doesn't exist, the program will return an error instead,
+
+On development branch builds, "development" is returned instead of a release version. In this case you may wish to use uname(1) to check the kernel build date instead.
+.SH EXIT STATUS
+.PP
+\f[B]orchanixos-release\f[R] will exit with 0 for success and 1 for failure.
+.SH EXAMPLES
+.TP
+\f[B]orchanixos-release\f[R]
+Returns the currently installed version of OrchanixOS.
+.SH SEE ALSO
+.TP
+uname(1)
+.SH BUGS
+.PP
+Report bugs to <https://github.com/OrchanixOS/OrchanixOS/issues>.
+
+NOTE: Please first check that your issue has not yet been fixed in the development branch!
+.SH COPYRIGHT
+.PP
+Copyright (C) 2022 OrchanixOS Developers.
+
+This software is part of the OrchanixOS system, and is licensed under the GNU GPLv3+.
+
+A copy of the license can be found at /usr/share/orchanixos/LICENSE on a OrchanixOS system.
+
+It can also be found at <https://www.gnu.org/licenses/gpl.html>.

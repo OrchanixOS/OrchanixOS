@@ -1,0 +1,4 @@
+# Just load /etc/profile, it has what we need.
+if [ -f /etc/profile ]; then
+  . /etc/profile
+fi

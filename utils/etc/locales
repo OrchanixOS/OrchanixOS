@@ -1,0 +1,12 @@
+# This file contains the list of supported locales for OrchanixOS. It will be
+# automatically generated from the "localedata/SUPPORTED" file in the source
+# distribution for Glibc.
+#
+# Uncomment any locales you need and run 'mklocales' to (re)generate them.
+# 'en_US.UTF-8 UTF-8' is uncommented and enabled by default. You may also need
+# to set which locale is the default via the /etc/locale.conf file and/or with
+# the localectl(1) command.
+#
+# The OrchanixOS Installation Program will do all this automatically. Only do it
+# manually if you need to change the locales for some reason.
+#

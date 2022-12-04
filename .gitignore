@@ -1,0 +1,6 @@
+orchanixos-rootfs
+sources
+stage3/sources
+orchanixos-*-rootfs-*.tar
+orchanixos-*-rootfs-*.tar.xz
+orchanixos-*.iso

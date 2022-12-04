@@ -1,0 +1,9 @@
+[submodule "stage3/gnome"]
+  path = stage3/gnome
+  url = https://github.com/OrchanixOS/Orchanix-GNOME
+[submodule "stage3/xfce"]
+  path = stage3/xfce
+  url = https://github.com/OrchanixOS/Orchanix-Xfce
+[submodule "stage3/plasma"]
+  path = stage3/plasma
+  url = https://github.com/OrchanixOS/Orchanix-Plasma

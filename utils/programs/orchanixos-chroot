@@ -1,0 +1,57 @@
+#!/bin/bash
+# Enter a chroot environment for OrchanixOS.
+
+set -e
+
+if [ $EUID -ne 0 ]; then
+  echo "Error: mass-chroot must be run as root." >&2
+  exit 1
+fi
+
+chrootdir="$1"
+shift
+
+if [ -z "$chrootdir" ]; then
+  echo "Usage: mass-chroot <chroot dir> [optional custom command]"
+  exit 1
+fi
+
+if [ ! -d "$chrootdir" ]; then
+  echo "Error: $chrootdir is not a directory I can chroot into." >&2
+  exit 1
+fi
+
+echo "Entering chroot environment in $chrootdir..."
+
+mount --bind /dev "$chrootdir"/dev
+mount --bind /dev/pts "$chrootdir"/dev/pts
+mount -t tmpfs devshm "$chrootdir"/dev/shm
+mount -t proc proc "$chrootdir"/proc
+mount -t sysfs sysfs "$chrootdir"/sys
+mount -t tmpfs tmpfs "$chrootdir"/run
+mkdir -p "$chrootdir"/run/lock
+
+set +e
+
+chroot "$chrootdir" "$@"
+STATUS=$?
+
+set -e
+
+echo "Exiting chroot environment..."
+
+sync
+umount -R "$chrootdir"/dev/pts
+umount -R "$chrootdir"/dev/shm
+umount -R "$chrootdir"/dev
+umount -R "$chrootdir"/proc
+umount -R "$chrootdir"/sys
+umount -R "$chrootdir"/run
+
+if [ $STATUS -eq 0 ]; then
+  echo "Chroot exited successfully."
+else
+  echo "Chroot exited with unsuccessful exit code $STATUS."
+fi
+
+exit $STATUS
