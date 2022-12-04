@@ -6951,9 +6951,9 @@ unset KREL
 gcc $CFLAGS orchanixos-release.c -o orchanixos-release -s
 install -m755 orchanixos-release /usr/bin/orchanixos-release
 # Additional OrchanixOS files.
-install -t /usr/share/orchanixos -Dm644 LICENSE builtins orchanixos-logo.png orchanixos-logo-small.png orchanixos-logo-extrasmall.png orchanixos-logo-notext.png orchanixos-logo-sidetext.png
+install -t /usr/share/orchanixos -Dm644 LICENSE builtins orchanix-logo.png orchanix-logo-small.png orchanix-logo-extrasmall.png orchanix-logo-sidetext.png orchanix-logo-dark-sidetext.png
 for i in /usr/share/orchanixos/*.png; do ln -sfr $i /usr/share/pixmaps; done
-cp /usr/share/orchanixos/orchanixos-logo-sidetext.png /usr/share/plymouth/themes/spinner/watermark.png
+cp /usr/share/orchanixos/orchanix-logo-sidetext.png /usr/share/plymouth/themes/spinner/watermark.png
 # Clean sources directory and self destruct.
 cd ..
 rm -rf /sources

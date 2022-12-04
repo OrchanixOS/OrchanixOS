@@ -19,8 +19,8 @@ export ORCHANIXOS ORCHANIXOS_TARGET PATH SRC
 # Build in parallel using all available CPU cores.
 export MAKEFLAGS="-j$(nproc)"
 # Compiler flags for OrchanixOS. We prefer to optimise for size.
-CFLAGS="-Os -pipe"
-CXXFLAGS="-Os -pipe"
+CFLAGS="-O2 -pipe"
+CXXFLAGS="-O2 -pipe"
 CPPFLAGS=""
 LDFLAGS=""
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS

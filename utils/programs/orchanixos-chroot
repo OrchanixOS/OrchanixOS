@@ -4,7 +4,7 @@
 set -e
 
 if [ $EUID -ne 0 ]; then
-  echo "Error: mass-chroot must be run as root." >&2
+  echo "Error: orchanixos-chroot must be run as root." >&2
   exit 1
 fi
 
@@ -12,7 +12,7 @@ chrootdir="$1"
 shift
 
 if [ -z "$chrootdir" ]; then
-  echo "Usage: mass-chroot <chroot dir> [optional custom command]"
+  echo "Usage: orchanixos-chroot <chroot dir> [optional custom command]"
   exit 1
 fi
 

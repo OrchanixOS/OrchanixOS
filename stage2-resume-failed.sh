@@ -18,14 +18,14 @@ if [ "$1" != "CONFIRM_STAGE2_RESUME=YES" ]; then
   exit 1
 fi
 # Setup the environment.
-export MASSOS="$PWD"/massos-rootfs
+export ORCHANIXOS="$PWD"/orchanixos-rootfs
 # Ensure stage1 has been run first.
-if [ ! -d "$MASSOS" ]; then
+if [ ! -d "$ORCHANIXOS" ]; then
   echo "Error: You must run stage1.sh first!" >&2
   exit 1
 fi
 # Chroot into the OrchanixOS environment and continue the build.
-utils/programs/orchanixos-chroot "$MASSOS" /sources/build-system.sh
+utils/programs/orchanixos-chroot "$ORCHANIXOS" /sources/build-system.sh
 # Finishing message.
 echo
 echo "Stage 2 build completed successfully."

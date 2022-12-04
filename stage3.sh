@@ -87,11 +87,11 @@ fi
 ## build environment file.
 cp build.env "${ORCHANIXOS}"/sources
 # Re-enter the chroot and continue the build.
-utils/programs/mass-chroot "$ORCHANIXOS" /sources/build-stage3.sh
+utils/programs/orchanixos-chroot "$ORCHANIXOS" /sources/build-stage3.sh
 # Put in finalize.sh and finish the build.
 echo "Finalizing the build..."
 cp finalize.sh "$ORCHANIXOS"/sources
-utils/programs/mass-chroot "$ORCHANIXOS" /sources/finalize.sh
+utils/programs/orchanixos-chroot "$ORCHANIXOS" /sources/finalize.sh
 # Install preupgrade and postupgrade.
 cp utils/{pre,post}upgrade "$ORCHANIXOS"/tmp
 # Strip executables and libraries to free up space.
