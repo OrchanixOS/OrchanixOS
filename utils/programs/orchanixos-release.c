@@ -10,7 +10,7 @@ Copyright (C) 2022 Xinc.
 int main() {
   int c;
   FILE *file;
-  file = fopen("/etc/oschanixos-release","r");
+  file = fopen("/etc/orchanixos-release","r");
   if (file) {
     while ((c = getc(file)) != EOF) {
       putchar(c);

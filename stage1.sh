@@ -41,6 +41,9 @@ mv sources "$SRC"
 # Copy patches into the temporary environment.
 mkdir -p "$SRC"/patches
 cp patches/* "$SRC"/patches
+# Copy patches into the temporary environment.
+mkdir -p "$SRC"/logo
+cp logo/* "$SRC"/logo
 # Copy systemd units into the temporary environment.
 cp -r utils/systemd-units "$SRC"
 # Change to the sources directory.
@@ -49,7 +52,7 @@ cd "$SRC"
 tar -xf binutils-2.39.tar.xz
 cd binutils-2.39
 mkdir build; cd build
-CFLAGS="-O2" CXXFLAGS="-O2" ../configure --prefix="$ORCHANIXOS"/tools --with-sysroot="$ORCHANIXOS" --target=x86_64-stage1-linux-gnu --with-pkgversion="OrchanixOS Binutils 2.39" --enable-relro --disable-gprofng --disable-nls --disable-werror
+../configure --prefix="$ORCHANIXOS"/tools --with-sysroot="$ORCHANIXOS" --target=x86_64-stage1-linux-gnu --with-pkgversion="OrchanixOS Binutils 2.39" --enable-relro --disable-gprofng --disable-nls --disable-werror
 make
 make -j1 install
 cd ../..
@@ -64,7 +67,7 @@ tar -xf ../mpc-1.2.1.tar.gz -C mpc --strip-components=1
 tar -xf ../isl-0.25.tar.xz -C isl --strip-components=1
 sed -i '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
 mkdir build; cd build
-CFLAGS="-O2" CXXFLAGS="-O2" ../configure --prefix="$ORCHANIXOS"/tools --target=x86_64-stage1-linux-gnu --enable-languages=c,c++ --with-pkgversion="OrchanixOS GCC 12.2.0" --with-glibc-version=2.36 --with-sysroot="$ORCHANIXOS" --with-newlib --without-headers --enable-default-ssp --enable-linker-build-id --disable-decimal-float --disable-libatomic --disable-libgomp --disable-libquadmath --disable-libssp --disable-libstdcxx --disable-libvtv --disable-multilib --disable-nls --disable-shared --disable-threads
+../configure --prefix="$ORCHANIXOS"/tools --target=x86_64-stage1-linux-gnu --enable-languages=c,c++ --with-pkgversion="OrchanixOS GCC 12.2.0" --with-glibc-version=2.36 --with-sysroot="$ORCHANIXOS" --with-newlib --without-headers --enable-default-ssp --enable-linker-build-id --disable-decimal-float --disable-libatomic --disable-libgomp --disable-libquadmath --disable-libssp --disable-libstdcxx --disable-libvtv --disable-multilib --disable-nls --disable-shared --disable-threads
 make
 make install
 cat ../gcc/{limitx,glimits,limity}.h > "$ORCHANIXOS"/tools/lib/gcc/x86_64-stage1-linux-gnu/12.2.0/install-tools/include/limits.h
@@ -85,7 +88,7 @@ cd glibc-2.36
 patch -Np1 -i ../patches/glibc-2.36-multiplefixes.patch
 mkdir build; cd build
 echo "rootsbindir=/usr/sbin" > configparms
-CFLAGS="-O2" CXXFLAGS="-O2" ../configure --prefix=/usr --host=x86_64-stage1-linux-gnu --build=$(../scripts/config.guess) --enable-kernel=3.2 --disable-default-pie --with-headers="$ORCHANIXOS"/usr/include libc_cv_slibdir=/usr/lib
+../configure --prefix=/usr --host=x86_64-stage1-linux-gnu --build=$(../scripts/config.guess) --enable-kernel=3.2 --disable-default-pie --with-headers="$ORCHANIXOS"/usr/include libc_cv_slibdir=/usr/lib
 make
 make DESTDIR="$ORCHANIXOS" install
 ln -sf ld-linux-x86-64.so.2 "$ORCHANIXOS"/usr/lib/ld-lsb-x86-64.so.3
@@ -97,7 +100,7 @@ rm -rf glibc-2.36
 tar -xf gcc-12.2.0.tar.xz
 cd gcc-12.2.0
 mkdir build; cd build
-CFLAGS="-O2" CXXFLAGS="-O2" ../libstdc++-v3/configure --prefix=/usr --host=x86_64-stage1-linux-gnu --build=$(../config.guess) --disable-multilib --disable-nls --disable-libstdcxx-pch --with-gxx-include-dir=/tools/x86_64-stage1-linux-gnu/include/c++/$(x86_64-stage1-linux-gnu-gcc -dumpversion)
+../libstdc++-v3/configure --prefix=/usr --host=x86_64-stage1-linux-gnu --build=$(../config.guess) --disable-multilib --disable-nls --disable-libstdcxx-pch --with-gxx-include-dir=/tools/x86_64-stage1-linux-gnu/include/c++/$(x86_64-stage1-linux-gnu-gcc -dumpversion)
 make
 make DESTDIR="$ORCHANIXOS" install
 cd ../..
@@ -132,7 +135,7 @@ tar -xf binutils-2.39.tar.xz
 cd binutils-2.39
 sed -i '6009s/$add_dir//' ltmain.sh
 mkdir build; cd build
-CFLAGS="-O2" CXXFLAGS="-O2" ../configure --prefix=/usr --host=x86_64-stage1-linux-gnu --build=$(../config.guess) --with-pkgversion="OrchanixOS Binutils 2.39" --enable-relro --enable-shared --disable-gprofng --disable-nls --disable-werror
+../configure --prefix=/usr --host=x86_64-stage1-linux-gnu --build=$(../config.guess) --with-pkgversion="OrchanixOS Binutils 2.39" --enable-relro --enable-shared --disable-gprofng --disable-nls --disable-werror
 make
 make -j1 DESTDIR="$ORCHANIXOS" install
 cd ../..
@@ -148,7 +151,7 @@ tar -xf ../isl-0.25.tar.xz -C isl --strip-components=1
 sed -i '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
 sed -i '/thread_header =/s/@.*@/gthr-posix.h/' libgcc/Makefile.in libstdc++-v3/include/Makefile.in
 mkdir build; cd build
-CFLAGS="-O2" CXXFLAGS="-O2" ../configure --prefix=/usr --host=x86_64-stage1-linux-gnu --build=$(../config.guess) --target=x86_64-stage1-linux-gnu LDFLAGS_FOR_TARGET=-L"$PWD/x86_64-stage1-linux-gnu/libgcc" --with-build-sysroot="$ORCHANIXOS" --enable-languages=c,c++ --with-pkgversion="OrchanixOS GCC 12.2.0" --enable-default-ssp --enable-initfini-array --enable-linker-build-id --disable-nls --disable-multilib --disable-decimal-float --disable-libatomic --disable-libgomp --disable-libquadmath --disable-libssp --disable-libvtv
+../configure --prefix=/usr --host=x86_64-stage1-linux-gnu --build=$(../config.guess) --target=x86_64-stage1-linux-gnu LDFLAGS_FOR_TARGET=-L"$PWD/x86_64-stage1-linux-gnu/libgcc" --with-build-sysroot="$ORCHANIXOS" --enable-languages=c,c++ --with-pkgversion="OrchanixOS GCC 12.2.0" --enable-default-ssp --enable-initfini-array --enable-linker-build-id --disable-nls --disable-multilib --disable-decimal-float --disable-libatomic --disable-libgomp --disable-libquadmath --disable-libssp --disable-libvtv
 make
 make DESTDIR="$ORCHANIXOS" install
 ln -sf gcc "$ORCHANIXOS"/usr/bin/cc
@@ -167,12 +170,11 @@ rm -rf "$ORCHANIXOS"/usr/share/{info,man,doc}/*
 # Copy extra utilities and configuration files into the environment.
 cp -r utils/etc/* "$ORCHANIXOS"/etc
 cp utils/orchanixos-release "$ORCHANIXOS"/etc
-cp utils/programs/{adduser,mass-chroot,mkinitramfs,mklocales,set-default-tar} "$ORCHANIXOS"/usr/sbin
+cp utils/programs/{adduser,orchanixos-chroot,mkinitramfs,mklocales,set-default-tar} "$ORCHANIXOS"/usr/sbin
 cp utils/programs/{un,}zman "$ORCHANIXOS"/usr/bin
 cp utils/programs/orchanixos-release.c "$SRC"
 cp -r utils/build-configs/* "$SRC"
 cp -r logo/* "$SRC"
-cp utils/builtins "$SRC"
 cp -r utils/extra-package-licenses "$SRC"
 cp -r backgrounds "$SRC"
 cp -r utils/man "$SRC"

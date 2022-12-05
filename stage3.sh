@@ -36,11 +36,6 @@ if [ ! -e "stage3/$1/source-urls" ]; then
   echo "is no source-urls file." >&2
   exit 1
 fi
-if [ "$1" != "nodesktop" ] && [ ! -e "stage3/$1/builtins" ]; then
-  echo "Stage 3 directory and build script for '$1' was found, but there" >&2
-  echo "is no builtins file." >&2
-  exit 1
-fi
 # Download source URls for Stage 3.
 echo "Downloading sources for '$1' (Stage 3)..."
 mkdir -p stage3/sources; cd stage3/sources
