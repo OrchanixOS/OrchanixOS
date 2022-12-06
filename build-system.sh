@@ -25,6 +25,8 @@ cd /sources
 # === REMOVE LINES BELOW THIS FOR RESUMING A FAILED BUILD ===
 # Mark the build as started, for Stage 2 resume.
 touch .BUILD_HAS_STARTED
+# Add versioning file:
+. package-versions.conf
 # Setup the full filesystem structure.
 mkdir -p /{boot,home,mnt,opt,srv}
 mkdir -p /boot/efi
@@ -125,9 +127,9 @@ install -t /usr/share/licenses/neofetch -Dm644 LICENSE.md
 cd ..
 rm -rf hyfetch-1.4.0
 # Glibc.
-tar -xf glibc-2.36.tar.xz
+tar -xf glibc-${glibc}.tar.xz
 cd glibc-2.36
-patch -Np1 -i ../patches/glibc-2.36-multiplefixes.patch
+patch -Np1 -i ../patches/glibc-${glibc}-multiplefixes.patch
 mkdir build; cd build
 echo "rootsbindir=/usr/sbin" > configparms
 ../configure --prefix=/usr --enable-kernel=3.2 --enable-stack-protector=strong --disable-default-pie --disable-werror --with-headers=/usr/include libc_cv_slibdir=/usr/lib
@@ -143,7 +145,7 @@ sed -e '/#/d' -e '/SUPPORTED-LOCALES/d' -e 's|\\||g' -e 's|/| |g' -e 's|^|#|g' -
 mklocales
 install -t /usr/share/licenses/glibc -Dm644 ../COPYING ../COPYING.LIB ../LICENSES
 cd ../..
-rm -rf glibc-2.36
+rm -rf glibc-${glibc}
 # tzdata.
 mkdir -p tzdata; cd tzdata
 tar -xf ../tzdata2022e.tar.gz
@@ -299,19 +301,19 @@ install -t /usr/share/licenses/tcl -Dm644 ../license.terms
 cd ../..
 rm -rf tcl8.6.12
 # Binutils.
-tar -xf binutils-2.39.tar.xz
-cd binutils-2.39
+tar -xf binutils-${binutils}.tar.xz
+cd binutils-${binutils}
 mkdir build; cd build
-../configure --prefix=/usr --sysconfdir=/etc --with-pkgversion="OrchanixOS Binutils 2.39" --with-system-zlib --enable-gold --enable-install-libiberty --enable-ld=default --enable-plugins --enable-relro --enable-shared --disable-werror
+../configure --prefix=/usr --sysconfdir=/etc --with-pkgversion="OrchanixOS Binutils ${binutils}" --with-system-zlib --enable-gold --enable-install-libiberty --enable-ld=default --enable-plugins --enable-relro --enable-shared --disable-werror
 make tooldir=/usr
 make -j1 tooldir=/usr install
 rm -f /usr/lib/lib{bfd,ctf,ctf-nobfd,opcodes}.a
 install -t /usr/share/licenses/binutils -Dm644 ../COPYING ../COPYING.LIB ../COPYING3 ../COPYING3.LIB
 cd ../..
-rm -rf binutils-2.39
+rm -rf binutils-${binutils}
 # GMP.
-tar -xf gmp-6.2.1.tar.xz
-cd gmp-6.2.1
+tar -xf gmp-${gmp}.tar.xz
+cd gmp-${gmp}
 cp configfsf.guess config.guess
 cp configfsf.sub config.sub
 ./configure --prefix=/usr --enable-cxx --disable-static
@@ -319,25 +321,25 @@ make
 make install
 install -t /usr/share/licenses/gmp -Dm644 COPYING COPYINGv2 COPYINGv3 COPYING.LESSERv3
 cd ..
-rm -rf gmp-6.2.1
+rm -rf gmp-${gmp}
 # MPFR.
-tar -xf mpfr-4.1.0.tar.xz
-cd mpfr-4.1.0
+tar -xf mpfr-${mpfr}.tar.xz
+cd mpfr-${mpfr}
 ./configure --prefix=/usr --disable-static --enable-thread-safe
 make
 make install
 install -t /usr/share/licenses/mpfr -Dm644 COPYING COPYING.LESSER
 cd ..
-rm -rf mpfr-4.1.0
+rm -rf mpfr-${mpfr}
 # MPC.
-tar -xf mpc-1.2.1.tar.gz
-cd mpc-1.2.1
+tar -xf mpc-${mpc}.tar.gz
+cd mpc-${mpc}
 ./configure --prefix=/usr --disable-static
 make
 make install
 install -t /usr/share/licenses/mpc -Dm644 COPYING.LESSER
 cd ..
-rm -rf mpc-1.2.1
+rm -rf mpc-${mpc}
 # Attr.
 tar -xf attr-2.5.1.tar.gz
 cd attr-2.5.1
@@ -494,13 +496,13 @@ install -t /usr/share/licenses/shadow -Dm644 COPYING
 cd ..
 rm -rf shadow-4.12.3
 # GCC.
-tar -xf gcc-12.2.0.tar.xz
-cd gcc-12.2.0
+tar -xf gcc-${gcc}.tar.xz
+cd gcc-${gcc}
 mkdir -p isl
-tar -xf ../isl-0.25.tar.xz -C isl --strip-components=1
+tar -xf ../isl-${isl}.tar.xz -C isl --strip-components=1
 sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64
 mkdir build; cd build
-LD=ld ../configure --prefix=/usr --enable-languages=c,c++ --with-pkgversion="OrchanixOS GCC 12.2.0" --with-system-zlib --enable-default-ssp --enable-linker-build-id --disable-bootstrap --disable-multilib
+LD=ld ../configure --prefix=/usr --enable-languages=c,c++ --with-pkgversion="OrchanixOS GCC ${gcc}" --with-system-zlib --enable-default-ssp --enable-linker-build-id --disable-bootstrap --disable-multilib
 make
 make install
 rm -rf /usr/lib/gcc/$(gcc -dumpmachine)/$(gcc -dumpversion)/include-fixed/bits/
@@ -511,7 +513,7 @@ mv /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib
 find /usr -depth -name x86_64-stage1-linux-gnu\* | xargs rm -rf
 install -t /usr/share/licenses/gcc -Dm644 ../COPYING ../COPYING.LIB ../COPYING3 ../COPYING3.LIB ../COPYING.RUNTIME
 cd ../..
-rm -rf gcc-12.2.0
+rm -rf gcc-${gcc}
 # pkg-config.
 tar -xf pkg-config-0.29.2.tar.gz
 cd pkg-config-0.29.2
@@ -522,8 +524,8 @@ install -t /usr/share/licenses/pkg-config -Dm644 COPYING
 cd ..
 rm -rf pkg-config-0.29.2
 # Ncurses.
-tar -xf ncurses-6.3.tar.gz
-cd ncurses-6.3
+tar -xf ncurses-${ncurses}.tar.gz
+cd ncurses-${ncurses}
 ./configure --prefix=/usr --mandir=/usr/share/man --with-shared --without-debug --without-normal --enable-pc-files --enable-widec --with-pkg-config-libdir=/usr/lib/pkgconfig
 make
 make install
@@ -539,7 +541,7 @@ ln -sf libncurses.so /usr/lib/libcurses.so
 rm -f /usr/lib/libncurses++w.a
 install -t /usr/share/licenses/ncurses -Dm644 COPYING
 cd ..
-rm -rf ncurses-6.3
+rm -rf ncurses-${ncurses}
 # libedit.
 tar -xf libedit-20210910-3.1.tar.gz
 cd libedit-20210910-3.1
@@ -597,16 +599,16 @@ install -t /usr/share/licenses/grep -Dm644 COPYING
 cd ..
 rm -rf grep-3.8
 # Bash.
-tar -xf bash-5.2.tar.gz
-cd bash-5.2
-patch -Np0 -i ../patches/bash-5.2-upstreamfix.patch
+tar -xf bash-${bash}.tar.gz
+cd bash-${bash}
+patch -Np0 -i ../patches/bash-${bash}-upstreamfix.patch
 ./configure --prefix=/usr --without-bash-malloc --with-installed-readline
 make
 make install
 ln -sf bash.1 /usr/share/man/man1/sh.1
 install -t /usr/share/licenses/bash -Dm644 COPYING
 cd ..
-rm -rf bash-5.2
+rm -rf bash-${bash}
 # bash-completion.
 tar -xf bash-completion-2.11.tar.xz
 cd bash-completion-2.11
@@ -6896,8 +6898,8 @@ install -t /usr/share/licenses/busybox -Dm644 LICENSE
 cd ..
 rm -rf busybox-1.35.0
 # Linux Kernel.
-tar -xf linux-6.0.3.tar.xz
-cd linux-6.0.3
+tar -xf linux-${kernel}.tar.xz
+cd linux-${kernel}
 cp ../kernel-config .config
 make olddefconfig
 make
@@ -6933,7 +6935,7 @@ find "$builddir" -type f -name '*.o' -delete
 ln -sr "$builddir" "/usr/src/linux"
 install -t /usr/share/licenses/linux -Dm644 COPYING LICENSES/exceptions/* LICENSES/preferred/*
 cd ..
-rm -rf linux-6.0.3
+rm -rf linux-${kernel}
 unset builddir
 # NVIDIA Open Kernel Modules.
 tar -xf open-gpu-kernel-modules-520.56.06.tar.gz
